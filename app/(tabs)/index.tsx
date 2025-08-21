@@ -26,7 +26,7 @@ export default function Index() {
   const onPlay = () => {
     setIsPressed(isPressed ? false : true)
     setIsPlaying(isPlaying? false : true)
-    
+
     // if (isPressed) {
     //   setIsPressed(false);
     // } else {
@@ -54,6 +54,11 @@ export default function Index() {
       const duration = await Math.round(player.duration);
       setPosition(position);
       setDuration(duration);
+      if (position === duration) {
+        setIsPressed(false)
+        setIsPlaying(false)
+        setPosition(0)
+      }
     }, 1000);
     
     return () => clearInterval(interval);
@@ -61,6 +66,7 @@ export default function Index() {
 
   const changeValue = (value: number) => {
     player.seekTo(value)
+    
   }
 
   return (
