@@ -19,7 +19,7 @@ export default function TabsLayout() {
             <Tabs.Screen 
                 name="index"
                 options={{
-                    title: "Home",
+                    title: "Player",
                     tabBarIcon: ({ color, focused }) => (
                         <Ionicons
                             name={focused ? "play-circle-sharp" : "play-circle-outline"}

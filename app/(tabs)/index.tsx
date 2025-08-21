@@ -1,11 +1,11 @@
 import { useAudioPlayer } from "expo-audio";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 
+import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
-
 
 const MainPageImage = require("@/assets/images/Alfredo.jpg");
 const song = require("@/assets/audio/SomethingToRapAbout.mp3");
@@ -17,24 +17,50 @@ export default function Index() {
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  // const [value, setValue] = useState<number>(0);
+  // const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
 
   const onPlay = () => {
-    if (isPressed) {
-      setIsPressed(false);
-    } else {
-      setIsPressed(true);
-    }
+    setIsPressed(isPressed ? false : true)
+    setIsPlaying(isPlaying? false : true)
+    
+    // if (isPressed) {
+    //   setIsPressed(false);
+    // } else {
+    //   setIsPressed(true);
+    // }
 
     if (isPlaying) {
       player.pause();
-      player.seekTo(0);
-      setIsPlaying(false);
     } else {
       player.play();
-      setIsPlaying(true);
     }
+  }
+
+  const onPrevious = () => {
+    //
+  }
+
+  const onNext = () => {
+    //
+  }
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const position = await Math.round(player.currentTime);
+      const duration = await Math.round(player.duration);
+      setPosition(position);
+      setDuration(duration);
+    }, 1000);
     
+    return () => clearInterval(interval);
+  }, []);
+
+  const changeValue = (value: number) => {
+    player.seekTo(value)
   }
 
   return (
@@ -43,13 +69,17 @@ export default function Index() {
         <ImageViewer imgSource={MainPageImage} />
       </View>
       <View>
-        <SeekBar />
+        <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
       </View>
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonRow}>
-          <PlayButton onPress={onPlay} pressed={isPressed} />
+      <View style={styles.footerContainer}>
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonRow}>
+            <IconButton icon="skip-previous" onPress={onPrevious} />
+            <PlayButton onPress={onPlay} pressed={isPressed} />
+            <IconButton icon="skip-next" onPress={onNext} />
+          </View> 
         </View> 
-      </View> 
+      </View>
     </View> 
 
   );
@@ -66,10 +96,14 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: "absolute",
-    bottom: 80,
+    bottom: 40,
   },
   buttonRow: {
     alignItems: "center",
     flexDirection: "row",
+  },
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: "center",
   },
 });
