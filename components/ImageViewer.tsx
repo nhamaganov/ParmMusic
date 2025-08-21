@@ -13,7 +13,7 @@ export default function ImageViewer({imgSource}: Props) {
 const styles = StyleSheet.create({
     image: {
         width: 320,
-        height: 440,
+        height: 370,
         borderRadius: 18,
     }
 })

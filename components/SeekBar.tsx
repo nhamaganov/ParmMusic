@@ -1,13 +1,26 @@
-import Slider from "@react-native-community/slider"
+import Slider from "@react-native-community/slider";
 
-export default function SeekBar() {
+
+type Props = {
+    changeValue: (value: number) => void;
+    disabled: boolean
+    maxVal: number;
+    value: number;
+};
+
+export default function SeekBar({changeValue, maxVal, value, disabled}: Props) {
     return (
         <Slider 
-            style={{width: 200, height: 40}}
+            style={{width: 300, height: 300}}
             minimumValue={0}
-            maximumValue={1}
+            maximumValue={maxVal}
             minimumTrackTintColor="white"
             maximumTrackTintColor="#000000"
+            thumbTintColor="#fff"
+            onValueChange={changeValue}
+            value={value}
+            step={1}
+            disabled={disabled}
         />      
     )
 }
