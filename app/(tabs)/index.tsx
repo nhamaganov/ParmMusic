@@ -8,17 +8,16 @@ import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 
 const MainPageImage = require("@/assets/images/Alfredo.jpg");
-const song = require("@/assets/audio/SomethingToRapAbout.mp3");
+const song = require("@/assets/audio/TheBoss.mp3");
 
 
 export default function Index() {
   
   const player = useAudioPlayer(song)
+  
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  // const [value, setValue] = useState<number>(0);
-  // const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -26,12 +25,6 @@ export default function Index() {
   const onPlay = () => {
     setIsPressed(isPressed ? false : true)
     setIsPlaying(isPlaying? false : true)
-
-    // if (isPressed) {
-    //   setIsPressed(false);
-    // } else {
-    //   setIsPressed(true);
-    // }
 
     if (isPlaying) {
       player.pause();
