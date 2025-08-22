@@ -8,13 +8,17 @@ import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 
 const MainPageImage = require("@/assets/images/Alfredo.jpg");
-const song = require("@/assets/audio/TheBoss.mp3");
-
+const songs = [
+  require("@/assets/audio/TheBoss.mp3"),
+  require("@/assets/audio/SomethingToRapAbout.mp3"),
+  require("@/assets/audio/September.mp3"),
+]
 
 export default function Index() {
+    
+  const [currentSong, setCurrentSong] = useState(0)
   
-  const player = useAudioPlayer(song)
-  
+  const player = useAudioPlayer(songs[currentSong])
 
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
@@ -33,12 +37,20 @@ export default function Index() {
     }
   }
 
-  const onPrevious = () => {
-    //
+  const onPrevious = async () => {
+    await onPlay();
+    const previousSong = (currentSong - 1) % songs.length;
+    if (previousSong < 0) {
+      alert("This is first song");
+    } else {
+      await setCurrentSong(previousSong);
+    }
   }
 
-  const onNext = () => {
-    //
+  const onNext = async () => {
+    await onPlay();
+    const nextSong = (currentSong + 1) % songs.length;
+    await setCurrentSong(nextSong);
   }
 
   useEffect(() => {
