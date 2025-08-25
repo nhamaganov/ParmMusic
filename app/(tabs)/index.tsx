@@ -16,62 +16,61 @@ const songs = [
 
 export default function Index() {
     
+  
+  const [isPressed, setIsPressed] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0)
+  const [position, setPosition] = useState(0);
   
   const player = useAudioPlayer(songs[currentSong])
 
-  const [isPressed, setIsPressed] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
-  const [position, setPosition] = useState(0);
-  const [duration, setDuration] = useState(0);
-
   const onPlay = () => {
     setIsPressed(isPressed ? false : true)
-    setIsPlaying(isPlaying? false : true)
-
-    if (isPlaying) {
-      player.pause();
+    if (player.playing) {
+      player.pause()
     } else {
-      player.play();
+      player.play()
     }
   }
-
+  
   const onPrevious = async () => {
-    await onPlay();
-    const previousSong = (currentSong - 1) % songs.length;
-    if (previousSong < 0) {
-      alert("This is first song");
+    if (player.currentTime < 3) {
+      const previousTrack = (currentSong - 1 + songs.length) % songs.length;
+      setCurrentSong(previousTrack);
+      setIsPressed(false);
+      player.pause();
+      player.replace(songs[previousTrack]);
     } else {
-      await setCurrentSong(previousSong);
+      player.seekTo(0);
+      setPosition(0);
     }
+
   }
 
   const onNext = async () => {
-    await onPlay();
-    const nextSong = (currentSong + 1) % songs.length;
-    await setCurrentSong(nextSong);
+    const nextTrack = (currentSong + 1) % songs.length;
+    setCurrentSong(nextTrack);
+    setIsPressed(false);
+    player.pause();
+    player.replace(songs[nextTrack]);
   }
 
   useEffect(() => {
     const interval = setInterval(async () => {
       const position = await Math.round(player.currentTime);
-      const duration = await Math.round(player.duration);
       setPosition(position);
-      setDuration(duration);
-      if (position === duration) {
-        setIsPressed(false)
-        setIsPlaying(false)
-        setPosition(0)
+      if (position === Math.round(player.duration)) {
+        setIsPressed(false);
+        setPosition(0);
+        player.pause();
       }
     }, 1000);
     
     return () => clearInterval(interval);
-  }, []);
+  }, [player]);
 
   const changeValue = (value: number) => {
     player.seekTo(value)
-    
   }
 
   return (
