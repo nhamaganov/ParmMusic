@@ -6,14 +6,14 @@ type Props = {
 };
 
 export default function ImageViewer({imgSource}: Props) {
-    return <Image style={styles.image} source={imgSource} />
+    return <Image style={styles.image} source={imgSource} resizeMode="stretch"/>
 }
 
 
 const styles = StyleSheet.create({
     image: {
-        width: 300,
-        height: 370,
-        borderRadius: 12,
+        width: 370,
+        height: 440,
+        borderRadius: 6,
     }
 })

@@ -6,28 +6,15 @@ import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
-// import { songs } from "@/components/elements/Song";
+import { songs } from "@/components/elements/Song";
 
-const songs = [
-  {
-    "uri": require("@/assets/audio/TheBoss.mp3"),
-    "img": require("@/assets/images/TheBoss.jpg"),
-  },
-  {
-    "uri": require("@/assets/audio/SomethingToRapAbout.mp3"),
-    "img": require("@/assets/images/Alfredo.jpg"),
-  },
-  {
-    "uri": require("@/assets/audio/September.mp3"),
-    "img": require("@/assets/images/September.jpg"),
-  },
-]
+
 
 export default function Index() {
     
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0);
-  const [currentImg, setCurrentImg] = useState(songs[0].img);
+  const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
   
   const player = useAudioPlayer(songs[currentSong].uri)
@@ -51,7 +38,7 @@ export default function Index() {
     if (player.currentTime < 3) {
       const previousTrack = (currentSong - 1 + songs.length) % songs.length;
       setCurrentSong(previousTrack);
-      setCurrentImg(songs[previousTrack].img);
+      setCurrentImg(songs[previousTrack].cover);
       setIsPressed(false);
       player.pause();
       player.replace(songs[previousTrack].uri);
@@ -70,30 +57,27 @@ export default function Index() {
     }
     const nextTrack = (currentSong + 1) % songs.length;
     setCurrentSong(nextTrack);
-    setCurrentImg(songs[nextTrack].img);
+    setCurrentImg(songs[nextTrack].cover);
     player.replace(songs[nextTrack].uri);
     
   }
   
   useEffect(() => {
     const interval = setInterval(async () => {
-      setPosition(Math.round(player.currentTime));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [player]);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
       const curTime = formatSeconds(Math.round(player.currentTime));
       const durTime = formatSeconds(Math.round(player.duration));
+      setPosition(Math.round(player.currentTime));
+
       if (durTime === curTime) {
         setPosition(0);
         onNext();
         setIsPressed(false);
       }
-    }, 2000);
+    }, 1000);
+
     return () => clearInterval(interval);
   }, [player]);
+
 
 
   const changeValue = (value: number) => {
