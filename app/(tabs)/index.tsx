@@ -6,7 +6,7 @@ import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
-
+// import { songs } from "@/components/elements/Song";
 
 const songs = [
   {
