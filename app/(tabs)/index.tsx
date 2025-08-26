@@ -29,7 +29,6 @@ export default function Index() {
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].img);
   const [position, setPosition] = useState(0);
-  const [songDuration, setSongDuration] = useState<string>();
   
   const player = useAudioPlayer(songs[currentSong].uri)
 
@@ -75,21 +74,27 @@ export default function Index() {
     player.replace(songs[nextTrack].uri);
     
   }
+  
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      setPosition(Math.round(player.currentTime));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [player]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      const position = await Math.round(player.currentTime);
-      setPosition(position);
-      setSongDuration(formatSeconds(Math.round(player.duration)));
-      if (position === Math.round(player.duration)) {
-        setIsPressed(false);
+      const curTime = formatSeconds(Math.round(player.currentTime));
+      const durTime = formatSeconds(Math.round(player.duration));
+      if (durTime === curTime) {
         setPosition(0);
-        player.pause();
+        onNext();
+        setIsPressed(false);
       }
-    }, 100);
-    
+    }, 2000);
     return () => clearInterval(interval);
   }, [player]);
+
 
   const changeValue = (value: number) => {
     player.seekTo(value)
@@ -103,7 +108,7 @@ export default function Index() {
       <View style={styles.seekBarRow}>
         <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
         <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
-        <Text style={styles.songTime}>{songDuration}</Text>
+        <Text style={styles.songTime}>{formatSeconds(Math.round(player.duration))}</Text>
       </View>
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
