@@ -1,11 +1,17 @@
 import { songs } from "@/components/elements/Song";
 import SongList from "@/components/SongList";
 import { StyleSheet, View } from "react-native";
+import { router } from "expo-router";
 
 export default function Library() {
+  const handlePress = () => {
+    router.push({
+      pathname: "/",
+    })
+  }
   return (
     <View style={styles.container}>
-      <SongList songs={songs}/>
+      <SongList songs={songs} onPress={handlePress}/>
     </View>
   );
 }

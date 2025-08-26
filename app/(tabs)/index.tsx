@@ -16,15 +16,19 @@ export default function Index() {
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
+  const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
   
   const player = useAudioPlayer(songs[currentSong].uri)
-
+  
+  
   const formatSeconds = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainSeconds = seconds % 60;
     return `${minutes.toString().padStart(2,"0")}:${remainSeconds.toString().padStart(2,"0")}`;
   }
 
+
+  
   const onPlay = async () => {
     setIsPressed(isPressed ? false : true)
     if (player.playing) {
@@ -67,6 +71,7 @@ export default function Index() {
       const curTime = formatSeconds(Math.round(player.currentTime));
       const durTime = formatSeconds(Math.round(player.duration));
       setPosition(Math.round(player.currentTime));
+      setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
 
       if (durTime === curTime) {
         setPosition(0);
@@ -92,7 +97,7 @@ export default function Index() {
       <View style={styles.seekBarRow}>
         <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
         <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
-        <Text style={styles.songTime}>{formatSeconds(Math.round(player.duration))}</Text>
+        <Text style={styles.songTime}>{currentSongDuration}</Text>
       </View>
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>

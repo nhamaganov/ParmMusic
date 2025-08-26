@@ -1,16 +1,23 @@
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
 
 type SongListProps = {
     songs: Song[];
+    onPress: () => void;
 }
 
-export default function SongList({ songs }: SongListProps) {
+export default function SongList({ songs, onPress }: SongListProps) {
    const renderItem = ({ item }: { item: Song }) => (
-    <View>
-        <Image source={item.cover} style={styles.image}/>
-        <Text style={{color: "white"}}>{item.title}</Text>
-        <Text style={{color: "white"}}>{item.author}</Text>
+    <View style={styles.container}>
+        <TouchableOpacity onPress={onPress}>
+            <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.textContainer}>
+                <Text style={styles.songTitle}>{item.title}</Text>
+                <Text style={styles.authorTitle}>{item.author}</Text>
+            </View>
+        </TouchableOpacity>
     </View>
    )
 
@@ -26,7 +33,9 @@ export default function SongList({ songs }: SongListProps) {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        flexDirection: "row",
+        marginBottom: 30,
+        marginLeft: 18,
     },
     item: {
         flex: 1,
@@ -37,12 +46,22 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        width: 100,
-        height: 100,
-        borderRadius: 8,
+        width: 50,
+        height: 50,
+        borderRadius: 6,
     },
-    title: {
-        marginTop: 5,
+    textContainer: {
+        marginLeft: 10,
+    },
+    songTitle: {
         fontSize: 14,
+        color: "#fff",
+        justifyContent: "center",
+        marginTop: 5,
+    },
+    authorTitle: {
+        fontSize: 14,
+        color: "#c0c0c0ff",
+        marginTop: "auto",
     },
 });
