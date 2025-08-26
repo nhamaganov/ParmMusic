@@ -7,22 +7,31 @@ import ImageViewer from "@/components/ImageViewer";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 
-const MainPageImage = require("@/assets/images/Alfredo.jpg");
+
 const songs = [
-  require("@/assets/audio/TheBoss.mp3"),
-  require("@/assets/audio/SomethingToRapAbout.mp3"),
-  require("@/assets/audio/September.mp3"),
+  {
+    "uri": require("@/assets/audio/TheBoss.mp3"),
+    "img": require("@/assets/images/TheBoss.jpg"),
+  },
+  {
+    "uri": require("@/assets/audio/SomethingToRapAbout.mp3"),
+    "img": require("@/assets/images/Alfredo.jpg"),
+  },
+  {
+    "uri": require("@/assets/audio/September.mp3"),
+    "img": require("@/assets/images/September.jpg"),
+  },
 ]
 
 export default function Index() {
     
-  
   const [isPressed, setIsPressed] = useState<boolean>(false);
-  const [currentSong, setCurrentSong] = useState(0)
+  const [currentSong, setCurrentSong] = useState(0);
+  const [currentImg, setCurrentImg] = useState(songs[0].img);
   const [position, setPosition] = useState(0);
   const [songDuration, setSongDuration] = useState<string>();
   
-  const player = useAudioPlayer(songs[currentSong])
+  const player = useAudioPlayer(songs[currentSong].uri)
 
   const formatSeconds = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -43,9 +52,10 @@ export default function Index() {
     if (player.currentTime < 3) {
       const previousTrack = (currentSong - 1 + songs.length) % songs.length;
       setCurrentSong(previousTrack);
+      setCurrentImg(songs[previousTrack].img);
       setIsPressed(false);
       player.pause();
-      player.replace(songs[previousTrack]);
+      player.replace(songs[previousTrack].uri);
     } else {
       player.seekTo(0);
       setPosition(0);
@@ -61,7 +71,8 @@ export default function Index() {
     }
     const nextTrack = (currentSong + 1) % songs.length;
     setCurrentSong(nextTrack);
-    player.replace(songs[nextTrack]);
+    setCurrentImg(songs[nextTrack].img);
+    player.replace(songs[nextTrack].uri);
     
   }
 
@@ -75,7 +86,7 @@ export default function Index() {
         setPosition(0);
         player.pause();
       }
-    }, 1000);
+    }, 100);
     
     return () => clearInterval(interval);
   }, [player]);
@@ -87,7 +98,7 @@ export default function Index() {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-        <ImageViewer imgSource={MainPageImage} />
+        <ImageViewer imgSource={currentImg} />
       </View>
       <View style={styles.seekBarRow}>
         <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
@@ -126,21 +137,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   seekBarRow: {
+    boxSizing: "border-box",
     alignItems: "center",
     flexDirection: "row",
-    backgroundColor: "red",
-    height: 30,
+    marginTop: 90,
   },
   footerContainer: {
     flex: 1 / 3,
     alignItems: "center",
   },
   songContinious: {
-    marginRight: "5%",
+    marginRight: "2%",
     color: "white", 
   },
   songTime: {
-    marginLeft: "5%",
+    marginLeft: "2%",
     color: "white", 
   }
 
