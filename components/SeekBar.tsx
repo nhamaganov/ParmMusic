@@ -9,7 +9,7 @@ type Props = {
 export default function SeekBar({ changeValue, maxVal, value }: Props) {
     return (
         <Slider 
-            style={{width: 270, height: 300, alignItems: "center"}}
+            style={{width: 270, height: 100, alignItems: "center"}}
             minimumValue={0}
             maximumValue={maxVal}
             minimumTrackTintColor="white"

@@ -3,16 +3,16 @@ import { Song } from "./elements/Song";
 
 type SongListProps = {
     songs: Song[];
-    onPress: () => void;
+    onPress: (song: Song) => void;
 }
 
 export default function SongList({ songs, onPress }: SongListProps) {
    const renderItem = ({ item }: { item: Song }) => (
     <View style={styles.container}>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={() => onPress(item)}>
             <Image source={item.cover} style={styles.image} resizeMode="contain"/>
         </TouchableOpacity>
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={() => onPress(item)}>
             <View style={styles.textContainer}>
                 <Text style={styles.songTitle}>{item.title}</Text>
                 <Text style={styles.authorTitle}>{item.author}</Text>

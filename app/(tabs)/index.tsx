@@ -1,4 +1,5 @@
 import { useAudioPlayer } from "expo-audio";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -9,9 +10,7 @@ import SeekBar from "@/components/SeekBar";
 import { songs } from "@/components/elements/Song";
 
 
-
 export default function Index() {
-    
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
@@ -19,14 +18,14 @@ export default function Index() {
   const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
   
   const player = useAudioPlayer(songs[currentSong].uri)
-  
+  const params = useLocalSearchParams();
+  const selectedSong = params.selectedSong ? JSON.parse(params.selectedSong as string) : null;
   
   const formatSeconds = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainSeconds = seconds % 60;
     return `${minutes.toString().padStart(2,"0")}:${remainSeconds.toString().padStart(2,"0")}`;
   }
-
 
   
   const onPlay = async () => {
@@ -38,6 +37,7 @@ export default function Index() {
     }
   }
   
+
   const onPrevious = async () => {
     if (player.currentTime < 3) {
       const previousTrack = (currentSong - 1 + songs.length) % songs.length;
@@ -53,6 +53,7 @@ export default function Index() {
 
   }
 
+
   const onNext = () => {
     if (player.playing) {
       onPlay();
@@ -66,6 +67,7 @@ export default function Index() {
     
   }
   
+
   useEffect(() => {
     const interval = setInterval(async () => {
       const curTime = formatSeconds(Math.round(player.currentTime));
@@ -73,21 +75,30 @@ export default function Index() {
       setPosition(Math.round(player.currentTime));
       setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
 
-      if (durTime === curTime) {
-        setPosition(0);
-        onNext();
-        setIsPressed(false);
-      }
+      // if (durTime === curTime) {
+      //   setPosition(0);
+      //   onNext();
+      //   setIsPressed(false);
+      // }
     }, 1000);
 
     return () => clearInterval(interval);
   }, [player]);
 
 
+  useEffect(() => {
+    if (selectedSong) {
+      setCurrentSong(selectedSong.id - 1);
+      setCurrentImg(selectedSong.cover)
+      // console.log(selectedSong);
+    }
+  }, [selectedSong]);
+
 
   const changeValue = (value: number) => {
     player.seekTo(value)
   }
+
 
   return (
     <View style={styles.container}>
@@ -112,6 +123,7 @@ export default function Index() {
 
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -148,5 +160,4 @@ const styles = StyleSheet.create({
     marginLeft: "2%",
     color: "white", 
   }
-
 });

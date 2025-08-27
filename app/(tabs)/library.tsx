@@ -1,12 +1,13 @@
-import { songs } from "@/components/elements/Song";
+import { songs, Song } from "@/components/elements/Song";
 import SongList from "@/components/SongList";
 import { StyleSheet, View } from "react-native";
 import { router } from "expo-router";
 
 export default function Library() {
-  const handlePress = () => {
+  const handlePress = (song: Song) => {
     router.push({
       pathname: "/",
+      params: {selectedSong: JSON.stringify(song)}
     })
   }
   return (
