@@ -8,17 +8,15 @@ type SongListProps = {
 
 export default function SongList({ songs, onPress }: SongListProps) {
    const renderItem = ({ item }: { item: Song }) => (
-    <View style={styles.container}>
-        <TouchableOpacity onPress={() => onPress(item)}>
+    <TouchableOpacity onPress={() => onPress(item)}>
+        <View style={styles.container}>
             <Image source={item.cover} style={styles.image} resizeMode="contain"/>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => onPress(item)}>
             <View style={styles.textContainer}>
                 <Text style={styles.songTitle}>{item.title}</Text>
                 <Text style={styles.authorTitle}>{item.author}</Text>
             </View>
-        </TouchableOpacity>
-    </View>
+        </View>
+    </TouchableOpacity>
    )
 
    return (
@@ -26,6 +24,7 @@ export default function SongList({ songs, onPress }: SongListProps) {
         data={songs}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
+        style={{ width: "100%" }}
     />
    )
 }
@@ -52,6 +51,7 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         marginLeft: 10,
+        width: "100%",
     },
     songTitle: {
         fontSize: 14,

@@ -27,9 +27,12 @@ export default function Index() {
     return `${minutes.toString().padStart(2,"0")}:${remainSeconds.toString().padStart(2,"0")}`;
   }
 
+  const curTime = formatSeconds(Math.round(player.currentTime));
+  const durTime = formatSeconds(Math.round(player.duration));
+
   
   const onPlay = async () => {
-    setIsPressed(isPressed ? false : true)
+    setIsPressed(!isPressed)
     if (player.playing) {
       await player.pause()
     } else {
@@ -69,36 +72,35 @@ export default function Index() {
   
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      const curTime = formatSeconds(Math.round(player.currentTime));
-      const durTime = formatSeconds(Math.round(player.duration));
+    const interval = setInterval(() => {
       setPosition(Math.round(player.currentTime));
       setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
-
-      // if (durTime === curTime) {
-      //   setPosition(0);
-      //   onNext();
-      //   setIsPressed(false);
-      // }
     }, 1000);
 
     return () => clearInterval(interval);
+
   }, [player]);
 
 
-  useEffect(() => {
-    if (selectedSong) {
-      setCurrentSong(selectedSong.id - 1);
-      setCurrentImg(selectedSong.cover)
-      // console.log(selectedSong);
-    }
-  }, [selectedSong]);
+  // useEffect(() => {
+  //   if (durTime === curTime) {
+  //     setPosition(0);
+  //     onNext();
+  //     setIsPressed(false);
+  //   }
+  // })
+
+  // useEffect(() => {
+  //   if (selectedSong) {
+  //     setCurrentSong(selectedSong.id - 1);
+  //     setCurrentImg(selectedSong.cover)
+  //   }
+  // }, [selectedSong]);
 
 
   const changeValue = (value: number) => {
     player.seekTo(value)
   }
-
 
   return (
     <View style={styles.container}>
