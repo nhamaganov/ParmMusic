@@ -4,7 +4,7 @@
     "slug": "ParmMusic",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/spotify.png",
     "scheme": "parmmusic",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -16,7 +16,12 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ],
+      "package": "com.nhamagan.ParmMusic"
     },
     "web": {
       "bundler": "metro",
@@ -38,6 +43,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "85b9c541-8a79-4590-afa8-4cb953581c67"
+      }
+    },
+    "owner": "nhamagan"
   }
 }
