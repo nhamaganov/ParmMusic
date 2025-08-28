@@ -1,4 +1,4 @@
-import { useAudioPlayer } from "expo-audio";
+import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -11,13 +11,16 @@ import { songs } from "@/components/elements/Song";
 
 
 export default function Index() {
+  const [isFinished, setIsFinished] = useState<boolean>(false);
+  const [firstPlay, setFirstPlay] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
   const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
   
-  const player = useAudioPlayer(songs[currentSong].uri)
+  const player = useAudioPlayer(songs[currentSong].uri);
+  const playerStatus = useAudioPlayerStatus(player);
   const params = useLocalSearchParams();
   const selectedSong = params.selectedSong ? JSON.parse(params.selectedSong as string) : null;
   
@@ -32,11 +35,12 @@ export default function Index() {
 
   
   const onPlay = async () => {
-    setIsPressed(!isPressed)
     if (player.playing) {
       await player.pause()
+      setIsPressed(false)
     } else {
       await player.play()
+      setIsPressed(true)
     }
   };
   
@@ -70,28 +74,28 @@ export default function Index() {
   
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    const interval = setInterval(async () => {
       setPosition(Math.round(player.currentTime));
       setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
     }, 1000);
-
     return () => clearInterval(interval);
-
   }, [player]);
 
 
   useEffect(() => {
-    if (durTime === curTime) {
-      setPosition(0);
+    if (playerStatus.didJustFinish) {
       onNext();
       setIsPressed(false);
     }
-  }, [])
+  }, [playerStatus]);
+
+
 
   useEffect(() => {
     if (selectedSong) {
       setCurrentSong(selectedSong.id - 1);
-      setCurrentImg(selectedSong.cover)
+      setCurrentImg(selectedSong.cover);
+      
     }
   }, [selectedSong]);
 
