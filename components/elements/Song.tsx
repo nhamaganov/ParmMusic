@@ -30,4 +30,11 @@ export const songs: Song[] = [
         uri: require("@/assets/audio/September.mp3"),
         cover: require("@/assets/images/September.jpg"),
     },
+    {
+        id: "4",
+        title: "High Enough",
+        author: "K.Flay",
+        uri: require("@/assets/audio/HighEnough.mp3"),
+        cover: require("@/assets/images/HighEnough.jpg"),
+    },
 ]

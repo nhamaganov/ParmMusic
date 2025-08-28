@@ -5,19 +5,20 @@ import { StyleSheet, Text, View } from "react-native";
 
 import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
+import LikeSong from "@/components/LikeSong";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 import { songs } from "@/components/elements/Song";
 
 
 export default function Index() {
-  const [isFinished, setIsFinished] = useState<boolean>(false);
-  const [firstPlay, setFirstPlay] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
   const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
+  const [isLikePressed, setIsLikePressed] = useState(false)
+  const [justSwitched, setJustSwitched] = useState(false);
   
   const player = useAudioPlayer(songs[currentSong].uri);
   const playerStatus = useAudioPlayerStatus(player);
@@ -29,9 +30,6 @@ export default function Index() {
     const remainSeconds = seconds % 60;
     return `${minutes.toString().padStart(2,"0")}:${remainSeconds.toString().padStart(2,"0")}`;
   };
-
-  const curTime = formatSeconds(Math.round(player.currentTime));
-  const durTime = formatSeconds(Math.round(player.duration));
 
   
   const onPlay = async () => {
@@ -63,8 +61,6 @@ export default function Index() {
   const onNext = () => {
     if (player.playing) {
       onPlay();
-    } else {
-
     }
     const nextTrack = (currentSong + 1) % songs.length;
     setCurrentSong(nextTrack);
@@ -73,11 +69,16 @@ export default function Index() {
   };
   
 
+  const onLikePress = () => {
+    setIsLikePressed(!isLikePressed);
+  }
+
+
   useEffect(() => {
     const interval = setInterval(async () => {
       setPosition(Math.round(player.currentTime));
-      setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
     }, 1000);
+
     return () => clearInterval(interval);
   }, [player]);
 
@@ -89,15 +90,17 @@ export default function Index() {
     }
   }, [playerStatus]);
 
-
-
   useEffect(() => {
-    if (selectedSong) {
-      setCurrentSong(selectedSong.id - 1);
-      setCurrentImg(selectedSong.cover);
+    setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
+  })
+
+  // useEffect(() => {
+  //   if (selectedSong) {
+  //     setCurrentSong(selectedSong.id - 1);
+  //     setCurrentImg(selectedSong.cover);
       
-    }
-  }, [selectedSong]);
+  //   }
+  // }, [selectedSong]);
 
 
   const changeValue = (value: number) => {
@@ -113,6 +116,8 @@ export default function Index() {
         <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
         <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
         <Text style={styles.songTime}>{currentSongDuration}</Text>
+        <LikeSong pressed={isLikePressed} onPress={onLikePress} />
+
       </View>
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
@@ -151,6 +156,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     marginTop: 90,
+    marginLeft: 30,
   },
   footerContainer: {
     flex: 1 / 3,
