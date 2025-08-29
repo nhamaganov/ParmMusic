@@ -6,6 +6,7 @@ export type Song = {
     author: string;
     uri: string;
     cover: ImageSourcePropType;
+    isLiked: boolean;
 };
 
 export const songs: Song[] = [
@@ -15,6 +16,7 @@ export const songs: Song[] = [
         author: "James Brown",
         uri: require("@/assets/audio/TheBoss.mp3"),
         cover: require("@/assets/images/TheBoss.jpg"),
+        isLiked: false,
     },
     {
         id: "2",
@@ -22,6 +24,7 @@ export const songs: Song[] = [
         author: "Freddie Gibbs feat Tyler, The Creator",
         uri: require("@/assets/audio/SomethingToRapAbout.mp3"),
         cover: require("@/assets/images/Alfredo.jpg"),
+        isLiked: false,
     },
     {
         id: "3",
@@ -29,6 +32,7 @@ export const songs: Song[] = [
         author: "Earth, Wind & Fire",
         uri: require("@/assets/audio/September.mp3"),
         cover: require("@/assets/images/September.jpg"),
+        isLiked: false,
     },
     {
         id: "4",
@@ -36,5 +40,6 @@ export const songs: Song[] = [
         author: "K.Flay",
         uri: require("@/assets/audio/HighEnough.mp3"),
         cover: require("@/assets/images/HighEnough.jpg"),
+        isLiked: true,
     },
 ]

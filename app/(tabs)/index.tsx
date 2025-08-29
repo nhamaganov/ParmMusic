@@ -17,7 +17,7 @@ export default function Index() {
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
   const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
-  const [isLikePressed, setIsLikePressed] = useState(false)
+  const [isLikePressed, setIsLikePressed] = useState(songs[currentSong].isLiked)
   const [justSwitched, setJustSwitched] = useState(false);
   
   const player = useAudioPlayer(songs[currentSong].uri);
@@ -71,13 +71,17 @@ export default function Index() {
 
   const onLikePress = () => {
     setIsLikePressed(!isLikePressed);
-  }
+    if (songs[currentSong].isLiked) {
+      songs[currentSong].isLiked = false;
+    } else songs[currentSong].isLiked = true;
+  };
 
 
   useEffect(() => {
     const interval = setInterval(async () => {
       setPosition(Math.round(player.currentTime));
     }, 1000);
+
 
     return () => clearInterval(interval);
   }, [player]);
@@ -92,6 +96,9 @@ export default function Index() {
 
   useEffect(() => {
     setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
+    if (songs[currentSong].isLiked) {
+      setIsLikePressed(true);
+    } else setIsLikePressed(false);
   })
 
   // useEffect(() => {
