@@ -67,7 +67,6 @@ export default function Index() {
     setCurrentSong(nextTrack);
     setCurrentImg(songs[nextTrack].cover);
     player.replace(songs[nextTrack].uri);
-    onPlay();
   };
   
 
