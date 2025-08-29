@@ -19,7 +19,6 @@ export default function LikedSongList({ songs, onPress, onLikePress}: LikedSongL
                     <View style={styles.textContainer}>
                         <Text style={styles.songTitle}>{item.title}</Text>
                         <Text style={styles.authorTitle}>{item.author}</Text>
-                        
                     </View>
                 </View>
             </TouchableOpacity>
@@ -51,17 +50,11 @@ const styles = StyleSheet.create({
     
     titleContainer: {
         flexDirection: "row",
+        alignItems: "center",
+        width: "50%",
         marginBottom: 15,
         marginLeft: 18,
         paddingTop: 15,
-    },
-    item: {
-        flex: 1,
-        margin: 5,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        padding: 10,
-        alignItems: "center",
     },
     image: {
         width: 50,
