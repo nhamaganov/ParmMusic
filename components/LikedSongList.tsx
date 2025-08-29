@@ -6,10 +6,10 @@ type LikedSongListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
     onLikePress: (song: Song) => void;
-    
+    pressed: boolean;
 }
 
-export default function LikedSongList({ songs, onPress, onLikePress}: LikedSongListProps) {
+export default function LikedSongList({ songs, onPress, onLikePress, pressed }: LikedSongListProps) {
     const filteredList = songs.filter(item => item.isLiked === true);
     const renderItem = ({ item }: { item: Song }) => (
         <View style={styles.songItem}>
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
-        width: "50%",
+        width: "60%",
         marginBottom: 15,
         marginLeft: 18,
         paddingTop: 15,

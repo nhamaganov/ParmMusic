@@ -9,6 +9,7 @@ import LikeSong from "@/components/LikeSong";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 import { songs } from "@/components/elements/Song";
+import { setParams } from "expo-router/build/global-state/routing";
 
 
 export default function Index() {
@@ -18,13 +19,13 @@ export default function Index() {
   const [position, setPosition] = useState(0);
   const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
   const [isLikePressed, setIsLikePressed] = useState(songs[currentSong].isLiked)
-  const [justSwitched, setJustSwitched] = useState(false);
   
+
   const player = useAudioPlayer(songs[currentSong].uri);
   const playerStatus = useAudioPlayerStatus(player);
   const params = useLocalSearchParams();
   const selectedSong = params.selectedSong ? JSON.parse(params.selectedSong as string) : null;
-  
+
   const formatSeconds = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainSeconds = seconds % 60;
@@ -101,13 +102,14 @@ export default function Index() {
     } else setIsLikePressed(false);
   })
 
-  // useEffect(() => {
-  //   if (selectedSong) {
-  //     setCurrentSong(selectedSong.id - 1);
-  //     setCurrentImg(selectedSong.cover);
-      
-  //   }
-  // }, [selectedSong]);
+  useEffect(() => {
+    if (selectedSong) {
+      setCurrentSong(selectedSong.id - 1);
+      setCurrentImg(selectedSong.cover);
+    };
+
+    return () => setParams({ selectedSong: undefined });
+  }, [selectedSong]);
 
 
   const changeValue = (value: number) => {

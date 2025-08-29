@@ -1,12 +1,12 @@
 import LikedSongList from "@/components/LikedSongList";
 import { Song, songs } from "@/components/elements/Song";
-import { useEffect } from "react";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 
  
 export default function PlaylistScreen() {
-
+  const [isPressed, setIsPressed] = useState<boolean>(true);
 
   const handlePress = () => {
     //
@@ -14,20 +14,13 @@ export default function PlaylistScreen() {
 
   const handleLikePress = (song: Song) => {
     song.isLiked = false;
+    setIsPressed(prev => !prev);
   }
 
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      
-    }, 1000);
-
-
-    return () => clearInterval(interval);
-  }, [songs]);
 
   return (
       <View style={styles.container}>
-        <LikedSongList songs={songs} onPress={handlePress} onLikePress={handleLikePress}/>
+        <LikedSongList songs={songs} onPress={handlePress} onLikePress={handleLikePress} pressed={isPressed}/>
       </View>
     );
 }

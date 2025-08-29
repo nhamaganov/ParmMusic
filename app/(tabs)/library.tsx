@@ -10,6 +10,7 @@ export default function Library() {
       params: {selectedSong: JSON.stringify(song)}
     })
   }
+  
   return (
     <View style={styles.container}>
       <SongList songs={songs} onPress={handlePress}/>
