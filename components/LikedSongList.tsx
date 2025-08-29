@@ -6,10 +6,10 @@ type LikedSongListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
     onLikePress: (song: Song) => void;
-    pressed: boolean;
+    
 }
 
-export default function LikedSongList({ songs, onPress, onLikePress, pressed }: LikedSongListProps) {
+export default function LikedSongList({ songs, onPress, onLikePress }: LikedSongListProps) {
     const filteredList = songs.filter(item => item.isLiked === true);
     const renderItem = ({ item }: { item: Song }) => (
         <View style={styles.songItem}>
