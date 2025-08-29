@@ -1,15 +1,25 @@
 import LikedSongList from "@/components/LikedSongList";
-import { songs } from "@/components/elements/Song";
+import { Song, songs } from "@/components/elements/Song";
+import { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 
 const handlePress = () => {
   //
 }
+
+const handleLikePress = (song: Song) => {
+  song.isLiked = false;
+}
  
 export default function PlaylistScreen() {
+
+  useEffect(() => {
+    
+  },[songs])
+
   return (
       <View style={styles.container}>
-        <LikedSongList songs={songs} onPress={handlePress}/>
+        <LikedSongList songs={songs} onPress={handlePress} onLikePress={handleLikePress}/>
       </View>
     );
 }

@@ -1,24 +1,33 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
 
 type LikedSongListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
+    onLikePress: (song: Song) => void;
+    
 }
 
-export default function LikedSongList({ songs, onPress }: LikedSongListProps) {
+export default function LikedSongList({ songs, onPress, onLikePress}: LikedSongListProps) {
     const filteredList = songs.filter(item => item.isLiked === true);
     const renderItem = ({ item }: { item: Song }) => (
-        <TouchableOpacity onPress={() => onPress(item)}>
-            <View style={styles.container}>
-                <Image source={item.cover} style={styles.image} resizeMode="contain"/>
-                <View style={styles.textContainer}>
-                    <Text style={styles.songTitle}>{item.title}</Text>
-                    <Text style={styles.authorTitle}>{item.author}</Text>
+        <View style={styles.songItem}>
+            <TouchableOpacity onPress={() => onPress(item)}>
+                <View style={styles.titleContainer}>
+                    <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+                    <View style={styles.textContainer}>
+                        <Text style={styles.songTitle}>{item.title}</Text>
+                        <Text style={styles.authorTitle}>{item.author}</Text>
+                        
+                    </View>
                 </View>
-            </View>
-        </TouchableOpacity>
-    )
+            </TouchableOpacity>
+            <Pressable style={styles.iconButton} onPress={() => onLikePress(item)}>
+                <MaterialIcons name={item.isLiked ? "favorite" : "favorite-outline"} size={28} color="#fff" />
+            </Pressable>
+        </View>
+    ) 
 
    return (
     <FlatList
@@ -32,10 +41,19 @@ export default function LikedSongList({ songs, onPress }: LikedSongListProps) {
 
 
 const styles = StyleSheet.create({
-    container: {
+    songItem: {
         flexDirection: "row",
-        marginBottom: 30,
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderBottomWidth: 1,
+        borderBottomColor: "#616161ff",
+    },
+    
+    titleContainer: {
+        flexDirection: "row",
+        marginBottom: 15,
         marginLeft: 18,
+        paddingTop: 15,
     },
     item: {
         flex: 1,
@@ -64,5 +82,10 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: "#c0c0c0ff",
         marginTop: "auto",
+    },
+    iconButton: {
+        justifyContent: "flex-end",
+        alignItems: "flex-end",
+        marginRight: 30,
     },
 });
