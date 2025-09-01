@@ -42,4 +42,12 @@ export const songs: Song[] = [
         cover: require("@/assets/images/HighEnough.jpg"),
         isLiked: true,
     },
+    {
+        id: "5",
+        title: "Ain't no love",
+        author: "Booby Bland",
+        uri: require("@/assets/audio/AintNoLove.mp3"),
+        cover: require("@/assets/images/AintNoLove.jpg"),
+        isLiked: true,
+    },
 ]
