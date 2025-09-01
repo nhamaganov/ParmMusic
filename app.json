@@ -13,7 +13,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/spotify.png",
+        "foregroundImage": "./assets/images/yandex.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
