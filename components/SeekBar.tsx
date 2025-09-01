@@ -1,4 +1,7 @@
 import Slider from "@react-native-community/slider";
+import { Dimensions, StyleSheet } from "react-native";
+
+const { width } = Dimensions.get("window");  
 
 type Props = {
     changeValue: (value: number) => void;
@@ -9,7 +12,7 @@ type Props = {
 export default function SeekBar({ changeValue, maxVal, value }: Props) {
     return (
         <Slider 
-            style={{width: 200, height: 100, alignItems: "center"}}
+            style={styles.seekBarContainer}
             minimumValue={0}
             maximumValue={maxVal}
             minimumTrackTintColor="white"
@@ -21,3 +24,11 @@ export default function SeekBar({ changeValue, maxVal, value }: Props) {
         />      
     )
 }
+
+const styles = StyleSheet.create({
+    seekBarContainer: {
+        flex: 1,
+        marginHorizontal: width * 0.03, // 3% от ширины экрана
+        height: 4,
+    }
+})

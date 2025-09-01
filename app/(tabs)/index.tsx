@@ -1,7 +1,7 @@
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 
 import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
@@ -10,6 +10,9 @@ import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
 import { songs } from "@/components/elements/Song";
 import { setParams } from "expo-router/build/global-state/routing";
+
+
+const { width } = Dimensions.get("window");
 
 
 export default function Index() {
@@ -118,16 +121,18 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
+
       <View style={styles.imageContainer}>
         <ImageViewer imgSource={currentImg} />
       </View>
+
       <View style={styles.seekBarRow}>
         <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
         <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
         <Text style={styles.songTime}>{currentSongDuration}</Text>
         <LikeSong pressed={isLikePressed} onPress={onLikePress} />
-
       </View>
+
       <View style={styles.footerContainer}>
         <View style={styles.buttonContainer}>
           <View style={styles.buttonRow}>
@@ -137,6 +142,7 @@ export default function Index() {
           </View> 
         </View> 
       </View>
+
     </View> 
 
   );
@@ -149,8 +155,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#25292e",
     alignItems: "center",
   },
+
   imageContainer: {
     flex: 1,
+  },
+
+  seekBarRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: width * 0.05, // 5% от ширины экрана
+    marginVertical: 10,
+  },
+  songContinious: {
+    fontSize: width < 400 ? 12 : 14, // Меньший шрифт для узких экранов
+    color: '#969696ff',
+    minWidth: 10,
+    textAlign: 'center',
+    flexShrink: 0, // Запрещаем сжатие
+  },
+  songTime: {
+    fontSize: width < 400 ? 12 : 14,
+    color: '#969696ff',
+    minWidth: 10,
+    textAlign: 'center',
+    flexShrink: 0, // Запрещаем сжатие
+  },
+
+  footerContainer: {
+    flex: 1 / 3,
+    alignItems: "center",
   },
   buttonContainer: {
     position: "absolute",
@@ -160,23 +195,4 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
   },
-  seekBarRow: {
-    boxSizing: "border-box",
-    alignItems: "center",
-    flexDirection: "row",
-    marginTop: 90,
-    marginLeft: 30,
-  },
-  footerContainer: {
-    flex: 1 / 3,
-    alignItems: "center",
-  },
-  songContinious: {
-    marginRight: "2%",
-    color: "white", 
-  },
-  songTime: {
-    marginLeft: "2%",
-    color: "white", 
-  }
 });
