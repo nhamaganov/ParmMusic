@@ -16,6 +16,8 @@ const { width } = Dimensions.get("window");
 
 
 export default function Index() {
+  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+  const [isRepeat, setIsRepeat] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
@@ -80,6 +82,17 @@ export default function Index() {
     } else songs[currentSong].isLiked = true;
   };
 
+  
+  const onShuffle = () => {
+    setIsShuffle(prev => !prev);
+
+  };
+
+
+  const onRepeat = () => {
+    setIsRepeat(prev => !prev);
+  };
+
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -126,21 +139,30 @@ export default function Index() {
         <ImageViewer imgSource={currentImg} />
       </View>
 
-      <View style={styles.seekBarRow}>
-        <Text style={styles.songContinious}>{formatSeconds(Math.round(player.currentTime))}</Text>
-        <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
-        <Text style={styles.songTime}>{currentSongDuration}</Text>
-        <LikeSong pressed={isLikePressed} onPress={onLikePress} />
+      <View style={styles.titleContainer}>
+        <View>
+          <Text style={styles.songTitle}>{songs[currentSong].title}</Text>
+          <Text style={styles.authorTitle}>{songs[currentSong].author}</Text>
+        </View>
+        <View style={{alignSelf: "flex-end"}}>
+          <LikeSong pressed={isLikePressed} onPress={onLikePress} />
+        </View>
       </View>
 
-      <View style={styles.footerContainer}>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonRow}>
-            <IconButton icon="skip-previous" onPress={onPrevious} />
-            <PlayButton onPress={onPlay} pressed={isPressed} />
-            <IconButton icon="skip-next" onPress={onNext} />
-          </View> 
-        </View> 
+      <View style={styles.seekBarContainer}>
+        <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
+        <View style={styles.timeContainer}>
+          <Text style={styles.songCurrent}>{formatSeconds(Math.round(player.currentTime))}</Text>
+          <Text style={styles.songDuration}>{currentSongDuration}</Text>
+        </View>
+      </View>
+
+      <View style={styles.buttonContainer}>
+        <IconButton icon={isShuffle ? "shuffle-on" : "shuffle"} size={26} onPress={onShuffle} />
+        <IconButton icon="skip-previous" size={30} onPress={onPrevious} />
+        <PlayButton onPress={onPlay} pressed={isPressed} />
+        <IconButton icon="skip-next" size={30} onPress={onNext} />
+        <IconButton icon={isRepeat? "repeat-one-on" : "repeat-one"} size={26} onPress={onRepeat} />
       </View>
 
     </View> 
@@ -157,42 +179,89 @@ const styles = StyleSheet.create({
   },
 
   imageContainer: {
-    flex: 1,
+
   },
 
-  seekBarRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: '100%',
-    paddingHorizontal: width * 0.05, // 5% от ширины экрана
-    marginVertical: 10,
-  },
-  songContinious: {
-    fontSize: width < 400 ? 12 : 14, // Меньший шрифт для узких экранов
-    color: '#969696ff',
-    minWidth: 10,
-    textAlign: 'center',
-    flexShrink: 0, // Запрещаем сжатие
-  },
-  songTime: {
-    fontSize: width < 400 ? 12 : 14,
-    color: '#969696ff',
-    minWidth: 10,
-    textAlign: 'center',
-    flexShrink: 0, // Запрещаем сжатие
-  },
-
-  footerContainer: {
-    flex: 1 / 3,
-    alignItems: "center",
-  },
-  buttonContainer: {
-    position: "absolute",
-    bottom: 40,
-  },
-  buttonRow: {
-    alignItems: "center",
+  titleContainer: {
     flexDirection: "row",
+    width: "80%",
+    justifyContent: "space-between",
   },
+
+  songTitle: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 22,
+  },
+  
+  authorTitle: {
+    color: "#969696ff",
+    fontStyle: "italic",
+    fontSize: 15,
+  },
+
+  seekBarContainer: {
+    paddingTop: 30,
+    width: "90%",
+  },
+
+  timeContainer: {
+    flexDirection: "row",
+    width: "93%",
+    justifyContent: "space-between",
+    alignContent: "center",
+    marginLeft: "4%",
+    marginTop: 15,
+  },
+
+  songCurrent: {
+    color: "#fff",
+  },
+  
+  songDuration: {
+    color: "#fff",
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent:"space-between",
+    width: "90%",
+  },
+
+  // seekBarRow: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  //   justifyContent: 'space-between',
+  //   width: '100%',
+  //   paddingHorizontal: width * 0.05, // 5% от ширины экрана
+  //   marginVertical: 10,
+  // },
+  // songContinious: {
+  //   fontSize: width < 400 ? 12 : 14, // Меньший шрифт для узких экранов
+  //   color: '#969696ff',
+  //   minWidth: 10,
+  //   textAlign: 'center',
+  //   flexShrink: 0, // Запрещаем сжатие
+  // },
+  // songTime: {
+  //   fontSize: width < 400 ? 12 : 14,
+  //   color: '#969696ff',
+  //   minWidth: 10,
+  //   textAlign: 'center',
+  //   flexShrink: 0, // Запрещаем сжатие
+  // },
+
+  // footerContainer: {
+  //   flex: 1 / 3,
+  //   alignItems: "center",
+  // },
+  // buttonContainer: {
+  //   position: "absolute",
+  //   bottom: 40,
+  // },
+  // buttonRow: {
+  //   alignItems: "center",
+  //   flexDirection: "row",
+  // },
 });

@@ -5,12 +5,13 @@ import { Pressable, StyleSheet } from "react-native";
 type Props = {
     icon: keyof typeof MaterialIcons.glyphMap;
     onPress: () => void;
+    size: number;
 }
 
-export default function IconButton({ icon, onPress }: Props) {
+export default function IconButton({ icon, onPress, size }: Props) {
     return (
         <Pressable style={styles.iconButton} onPress={onPress}>
-            <MaterialIcons name={icon} size={40} color="#fff" />
+            <MaterialIcons name={icon} size={size} color="#fff" />
         </Pressable>
     )
 }
