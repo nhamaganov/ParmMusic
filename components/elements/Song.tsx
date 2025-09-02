@@ -20,8 +20,8 @@ export const songs: Song[] = [
     },
     {
         id: "2",
-        title: "Something to Rap About",
-        author: "Freddie Gibbs feat Tyler, The Creator",
+        title: "Something to Rap About (feat. Tyler, The Creator)",
+        author: "Freddie Gibbs, Tyler, The Creator",
         uri: require("@/assets/audio/SomethingToRapAbout.mp3"),
         cover: require("@/assets/images/Alfredo.jpg"),
         isLiked: false,
@@ -44,7 +44,7 @@ export const songs: Song[] = [
     },
     {
         id: "5",
-        title: "Ain't no love",
+        title: "Ain't No Love In The Heart Of The City",
         author: "Booby Bland",
         uri: require("@/assets/audio/AintNoLove.mp3"),
         cover: require("@/assets/images/AintNoLove.jpg"),

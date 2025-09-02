@@ -158,11 +158,11 @@ export default function Index() {
       </View>
 
       <View style={styles.titleContainer}>
-        <View>
-          <Text style={styles.songTitle}>{songs[currentSong].title}</Text>
+        <View style={{width: "85%"}}>
+          <Text numberOfLines={1} style={styles.songTitle}>{songs[currentSong].title}</Text>
           <Text style={styles.authorTitle}>{songs[currentSong].author}</Text>
         </View>
-        <View style={{alignSelf: "flex-end"}}>
+        <View style={{alignSelf: "center"}}>
           <LikeSong pressed={isLikePressed} onPress={onLikePress} />
         </View>
       </View>
@@ -177,7 +177,7 @@ export default function Index() {
 
       <View style={styles.buttonContainer}>
         <IconButton icon={isShuffle ? "shuffle-on" : "shuffle"} size={30} onPress={onShuffle} />
-        <View style={{flexDirection:"row", justifyContent:"space-between", width: "20%"}}>
+        <View style={{flexDirection:"row", justifyContent:"space-between", flexGrow:1/5}}>
           <IconButton icon="skip-previous" size={50} onPress={onPrevious} />
           <PlayButton onPress={onPlay} pressed={isPressed} />
           <IconButton icon="skip-next" size={50} onPress={onNext} />
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
 
   titleContainer: {
     flexDirection: "row",
-    width: "80%",
+    width: "88%",
     justifyContent: "space-between",
   },
 
@@ -222,17 +222,14 @@ const styles = StyleSheet.create({
   },
 
   seekBarContainer: {
-    paddingTop: 30,
-    width: "90%",
+    width: "95%",
+    alignItems: "center",
   },
-
+  
   timeContainer: {
     flexDirection: "row",
     width: "93%",
     justifyContent: "space-between",
-    alignContent: "center",
-    marginLeft: "4%",
-    marginTop: 15,
   },
 
   songCurrent: {
@@ -248,7 +245,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent:"space-between",
     width: "90%",
-    marginBottom: "3%",
+    marginBottom: "8%",
   },
 
   // seekBarRow: {

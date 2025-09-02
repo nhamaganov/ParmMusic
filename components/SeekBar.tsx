@@ -27,6 +27,6 @@ export default function SeekBar({ changeValue, maxVal, value }: Props) {
 
 const styles = StyleSheet.create({
     seekBarContainer: {
-        flex: 1, 
+        width: "100%",
     }
 })
