@@ -38,6 +38,11 @@ export default function Index() {
   };
 
   
+  const getRandom = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min)) + min;
+  }
+
+  
   const onPlay = async () => {
     if (player.playing) {
       await player.pause()
@@ -68,10 +73,22 @@ export default function Index() {
     if (player.playing) {
       onPlay();
     }
-    const nextTrack = (currentSong + 1) % songs.length;
-    setCurrentSong(nextTrack);
-    setCurrentImg(songs[nextTrack].cover);
-    player.replace(songs[nextTrack].uri);
+    if (isRepeat) {
+      const nextTrack = currentSong;
+      setCurrentSong(nextTrack);
+      setCurrentImg(songs[nextTrack].cover);
+      player.replace(songs[nextTrack].uri);
+    } else if (isShuffle) {
+      const nextTrack = getRandom(0, songs.length);
+      setCurrentSong(nextTrack);
+      setCurrentImg(songs[nextTrack].cover);
+      player.replace(songs[nextTrack].uri);
+    } else {
+      const nextTrack = (currentSong + 1) % songs.length;
+      setCurrentSong(nextTrack);
+      setCurrentImg(songs[nextTrack].cover);
+      player.replace(songs[nextTrack].uri);
+    }
   };
   
 
@@ -91,6 +108,11 @@ export default function Index() {
 
   const onRepeat = () => {
     setIsRepeat(prev => !prev);
+  };
+
+
+  const changeValue = (value: number) => {
+    player.seekTo(value)
   };
 
 
@@ -128,10 +150,6 @@ export default function Index() {
   }, [selectedSong]);
 
 
-  const changeValue = (value: number) => {
-    player.seekTo(value)
-  };
-
   return (
     <View style={styles.container}>
 
@@ -158,11 +176,13 @@ export default function Index() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <IconButton icon={isShuffle ? "shuffle-on" : "shuffle"} size={26} onPress={onShuffle} />
-        <IconButton icon="skip-previous" size={30} onPress={onPrevious} />
-        <PlayButton onPress={onPlay} pressed={isPressed} />
-        <IconButton icon="skip-next" size={30} onPress={onNext} />
-        <IconButton icon={isRepeat? "repeat-one-on" : "repeat-one"} size={26} onPress={onRepeat} />
+        <IconButton icon={isShuffle ? "shuffle-on" : "shuffle"} size={30} onPress={onShuffle} />
+        <View style={{flexDirection:"row", justifyContent:"space-between", width: "20%"}}>
+          <IconButton icon="skip-previous" size={50} onPress={onPrevious} />
+          <PlayButton onPress={onPlay} pressed={isPressed} />
+          <IconButton icon="skip-next" size={50} onPress={onNext} />
+        </View>
+        <IconButton icon={isRepeat? "repeat-one-on" : "repeat-one"} size={30} onPress={onRepeat} />
       </View>
 
     </View> 
@@ -176,6 +196,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#25292e",
     alignItems: "center",
+    justifyContent: "space-between",
   },
 
   imageContainer: {
@@ -227,6 +248,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent:"space-between",
     width: "90%",
+    marginBottom: "3%",
   },
 
   // seekBarRow: {
