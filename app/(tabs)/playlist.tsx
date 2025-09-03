@@ -16,7 +16,7 @@ export default function PlaylistScreen() {
     })
   } 
 
-  const handleLikePress = (song: Song) => {
+  const handleBtnPress = (song: Song) => {
     song.isLiked = false;
     setIsPressed(prev => !prev); // Без этой строки не работает))
   }
@@ -24,7 +24,7 @@ export default function PlaylistScreen() {
 
   return (
       <View style={styles.container}>
-        <LikedSongList songs={songs} onPress={handlePress} onLikePress={handleLikePress} />
+        <LikedSongList songs={songs} onPress={handlePress} onBtnPress={handleBtnPress} />
       </View>
     );
 }

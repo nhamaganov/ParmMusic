@@ -5,11 +5,11 @@ import { Song } from "./elements/Song";
 type LikedSongListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
-    onLikePress: (song: Song) => void;
+    onBtnPress: (song: Song) => void;
     
 }
 
-export default function LikedSongList({ songs, onPress, onLikePress }: LikedSongListProps) {
+export default function LikedSongList({ songs, onPress, onBtnPress }: LikedSongListProps) {
     const filteredList = songs.filter(item => item.isLiked === true);
     const renderItem = ({ item }: { item: Song }) => (
         <View style={styles.songItem}>
@@ -24,9 +24,9 @@ export default function LikedSongList({ songs, onPress, onLikePress }: LikedSong
                     </View>
                 </TouchableOpacity>
             </View>
-            <View>
-                <Pressable style={styles.iconButton} onPress={() => onLikePress(item)}>
-                    <MaterialIcons name={"clear"} size={28} color="#fff" />
+            <View style={{marginRight: "3%"}}>
+                <Pressable style={styles.iconButton} onPress={() => onBtnPress(item)}>
+                    <MaterialIcons name={"clear"} size={20} color="#fff" />
                 </Pressable>
             </View>
         </View>
@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
         marginTop: "auto",
     },
     iconButton: {
-        justifyContent: "flex-end",
-        alignItems: "flex-end",
-        marginRight: 30,
+        alignItems: "center",
     },
 });

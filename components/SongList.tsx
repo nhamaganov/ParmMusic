@@ -1,22 +1,31 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
 
 type SongListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
+    onLikePress: (song: Song) => void;
 }
 
-export default function SongList({ songs, onPress }: SongListProps) {
+export default function SongList({ songs, onPress, onLikePress }: SongListProps) {
    const renderItem = ({ item }: { item: Song }) => (
-    <TouchableOpacity onPress={() => onPress(item)}>
-        <View style={styles.container}>
-            <Image source={item.cover} style={styles.image} resizeMode="contain"/>
-            <View style={styles.textContainer}>
-                <Text style={styles.songTitle}>{item.title}</Text>
-                <Text style={styles.authorTitle}>{item.author}</Text>
+    <View style={styles.itemContainer}>
+        <TouchableOpacity style={{ width:"65%" }} onPress={() => onPress(item)}>
+            <View style={styles.titleContainer}>
+                <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+                <View style={styles.textContainer}>
+                    <Text numberOfLines={1} style={styles.songTitle}>{item.title}</Text>
+                    <Text style={styles.authorTitle}>{item.author}</Text>
+                </View>
             </View>
+        </TouchableOpacity>
+        <View style={styles.iconButton}>
+            <Pressable onPress={() => onLikePress(item)}>
+                <MaterialIcons name={item.isLiked ? "favorite" : "favorite-outline"} size={25} color="#fff" />
+            </Pressable>
         </View>
-    </TouchableOpacity>
+    </View>
    )
 
    return (
@@ -31,10 +40,21 @@ export default function SongList({ songs, onPress }: SongListProps) {
 
 
 const styles = StyleSheet.create({
-    container: {
+    itemContainer: {
         flexDirection: "row",
-        marginBottom: 30,
+        alignItems: "center",
+        justifyContent: "space-between",
+        borderBottomWidth: 1,
+        borderBottomColor: "#9696964f",
+    },
+
+    titleContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: "75%",
+        marginBottom: 15,
         marginLeft: 18,
+        paddingTop: 15,
     },
     item: {
         flex: 1,
@@ -64,4 +84,9 @@ const styles = StyleSheet.create({
         color: "#c0c0c0ff",
         marginTop: "auto",
     },
+
+    iconButton: {
+        justifyContent: "center",
+        marginRight: "3%",
+    }
 });
