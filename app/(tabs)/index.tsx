@@ -1,7 +1,7 @@
 import { useAudioPlayer, useAudioPlayerStatus } from "expo-audio";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import IconButton from "@/components/IconButton";
 import ImageViewer from "@/components/ImageViewer";
@@ -19,7 +19,6 @@ export default function Index() {
   const [currentSong, setCurrentSong] = useState(0);
   const [currentImg, setCurrentImg] = useState(songs[0].cover);
   const [position, setPosition] = useState(0);
-  const [currentSongDuration, setCurrentSongDuration] = useState<string>("00:00");
   const [isLikePressed, setIsLikePressed] = useState(songs[currentSong].isLiked)
   
 
@@ -36,12 +35,17 @@ export default function Index() {
 
   
   const getRandom = (min: number, max: number) => {
-    return Math.floor(Math.random() * (max - min)) + min;
+    let rand = Math.floor(Math.random() * (max - min)) + min;
+    if (rand !== currentSong) {
+      return rand;
+    } else {
+      return getRandom(min, max);
+    }
   }
 
   
   const onPlay = async () => {
-    if (player.playing) {
+    if (playerStatus.playing) {
       await player.pause()
       setIsPressed(false)
     } else {
@@ -52,7 +56,7 @@ export default function Index() {
   
 
   const onPrevious = async () => {
-    if (player.currentTime < 3) {
+    if (playerStatus.currentTime < 3) {
       const previousTrack = (currentSong - 1 + songs.length) % songs.length;
       setCurrentSong(previousTrack);
       setCurrentImg(songs[previousTrack].cover);
@@ -67,7 +71,7 @@ export default function Index() {
 
 
   const onNext = () => {
-    if (player.playing) {
+    if (playerStatus.playing) {
       onPlay();
     }
     if (isRepeat) {
@@ -90,7 +94,7 @@ export default function Index() {
   
 
   const onLikePress = () => {
-    setIsLikePressed(!isLikePressed);
+    setIsLikePressed(prev => !prev);
     if (songs[currentSong].isLiked) {
       songs[currentSong].isLiked = false;
     } else songs[currentSong].isLiked = true;
@@ -99,7 +103,6 @@ export default function Index() {
   
   const onShuffle = () => {
     setIsShuffle(prev => !prev);
-
   };
 
 
@@ -131,7 +134,6 @@ export default function Index() {
   }, [playerStatus]);
 
   useEffect(() => {
-    setCurrentSongDuration(formatSeconds(Math.round(player.duration)));
     if (songs[currentSong].isLiked) {
       setIsLikePressed(true);
     } else setIsLikePressed(false);
@@ -165,10 +167,10 @@ export default function Index() {
       </View>
 
       <View style={styles.seekBarContainer}>
-        <SeekBar changeValue={changeValue} maxVal={player.duration || 1} value={position} />
+        <SeekBar changeValue={changeValue} maxVal={playerStatus.duration || 1} value={position} />
         <View style={styles.timeContainer}>
-          <Text style={styles.songCurrent}>{formatSeconds(Math.round(player.currentTime))}</Text>
-          <Text style={styles.songDuration}>{currentSongDuration}</Text>
+          <Text style={styles.songCurrent}>{formatSeconds(Math.round(playerStatus.currentTime))}</Text>
+          <Text style={styles.songDuration}>{formatSeconds(Math.round(playerStatus.duration))}</Text>
         </View>
       </View>
 

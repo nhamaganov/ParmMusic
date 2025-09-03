@@ -13,18 +13,22 @@ export default function LikedSongList({ songs, onPress, onLikePress }: LikedSong
     const filteredList = songs.filter(item => item.isLiked === true);
     const renderItem = ({ item }: { item: Song }) => (
         <View style={styles.songItem}>
-            <TouchableOpacity onPress={() => onPress(item)}>
-                <View style={styles.titleContainer}>
-                    <Image source={item.cover} style={styles.image} resizeMode="contain"/>
-                    <View style={styles.textContainer}>
-                        <Text style={styles.songTitle}>{item.title}</Text>
-                        <Text style={styles.authorTitle}>{item.author}</Text>
+            <View style={{ width: "65%"}}>
+                <TouchableOpacity onPress={() => onPress(item)}>
+                    <View style={styles.titleContainer}>
+                        <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+                        <View style={styles.textContainer}>
+                            <Text numberOfLines={1} style={styles.songTitle}>{item.title}</Text>
+                            <Text style={styles.authorTitle}>{item.author}</Text>
+                        </View>
                     </View>
-                </View>
-            </TouchableOpacity>
-            <Pressable style={styles.iconButton} onPress={() => onLikePress(item)}>
-                <MaterialIcons name={item.isLiked ? "favorite" : "favorite-outline"} size={28} color="#fff" />
-            </Pressable>
+                </TouchableOpacity>
+            </View>
+            <View>
+                <Pressable style={styles.iconButton} onPress={() => onLikePress(item)}>
+                    <MaterialIcons name={"clear"} size={28} color="#fff" />
+                </Pressable>
+            </View>
         </View>
     ) 
 
@@ -51,7 +55,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: "row",
         alignItems: "center",
-        width: "60%",
+        width: "70%",
         marginBottom: 15,
         marginLeft: 18,
         paddingTop: 15,
