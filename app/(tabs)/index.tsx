@@ -12,9 +12,6 @@ import { songs } from "@/components/elements/Song";
 import { setParams } from "expo-router/build/global-state/routing";
 
 
-const { width } = Dimensions.get("window");
-
-
 export default function Index() {
   const [isShuffle, setIsShuffle] = useState<boolean>(false);
   const [isRepeat, setIsRepeat] = useState<boolean>(false);
@@ -248,39 +245,4 @@ const styles = StyleSheet.create({
     marginBottom: "8%",
   },
 
-  // seekBarRow: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'space-between',
-  //   width: '100%',
-  //   paddingHorizontal: width * 0.05, // 5% от ширины экрана
-  //   marginVertical: 10,
-  // },
-  // songContinious: {
-  //   fontSize: width < 400 ? 12 : 14, // Меньший шрифт для узких экранов
-  //   color: '#969696ff',
-  //   minWidth: 10,
-  //   textAlign: 'center',
-  //   flexShrink: 0, // Запрещаем сжатие
-  // },
-  // songTime: {
-  //   fontSize: width < 400 ? 12 : 14,
-  //   color: '#969696ff',
-  //   minWidth: 10,
-  //   textAlign: 'center',
-  //   flexShrink: 0, // Запрещаем сжатие
-  // },
-
-  // footerContainer: {
-  //   flex: 1 / 3,
-  //   alignItems: "center",
-  // },
-  // buttonContainer: {
-  //   position: "absolute",
-  //   bottom: 40,
-  // },
-  // buttonRow: {
-  //   alignItems: "center",
-  //   flexDirection: "row",
-  // },
 });
