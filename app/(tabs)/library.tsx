@@ -1,5 +1,6 @@
-import { Song, songs } from "@/components/elements/Song";
+import { Song } from "@/components/elements/Song";
 import SongList from "@/components/SongList";
+import { songStore } from "@/store/SongStore";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -26,7 +27,7 @@ export default function Library() {
   
   return (
     <View style={styles.container}>
-      <SongList songs={songs} onPress={handlePress} onLikePress={handleLikePress}/>
+      <SongList songs={songStore.songs} onPress={handlePress} onLikePress={handleLikePress}/>
     </View>
   );
 }

@@ -1,5 +1,5 @@
 import LikedSongList from "@/components/LikedSongList";
-import { Song, songs } from "@/components/elements/Song";
+import { Song } from "@/components/elements/Song";
 import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
@@ -16,15 +16,15 @@ export default function PlaylistScreen() {
     })
   } 
 
-  const handleBtnPress = (song: Song) => {
-    song.isLiked = false;
-    setIsPressed(prev => !prev); // Без этой строки не работает))
-  }
+  // const handleBtnPress = (song: Song) => {
+  //   song.isLiked = false;
+  //   setIsPressed(prev => !prev); // Без этой строки не работает))
+  // }
 
 
   return (
       <View style={styles.container}>
-        <LikedSongList songs={songs} onPress={handlePress} onBtnPress={handleBtnPress} />
+        <LikedSongList onPress={handlePress} />
       </View>
     );
 }

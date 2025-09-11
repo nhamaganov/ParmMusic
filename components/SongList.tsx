@@ -1,6 +1,8 @@
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
+import PlaylistButton from "./PlaylistButton";
+
 
 type SongListProps = {
     songs: Song[];
@@ -29,12 +31,15 @@ export default function SongList({ songs, onPress, onLikePress }: SongListProps)
    )
 
    return (
-    <FlatList
-        data={songs}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        style={{ width: "100%" }}
-    />
+    <View style={{ flex: 1, width: "100%" }}>
+        <FlatList
+            data={songs}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            style={{ width: "100%" }}
+            />
+        <PlaylistButton onPress={() => {}} buttonText="Play"/>
+    </View>
    )
 }
 

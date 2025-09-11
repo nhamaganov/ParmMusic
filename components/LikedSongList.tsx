@@ -1,16 +1,24 @@
+import { songStore } from "@/store/SongStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { observer } from "mobx-react-lite";
 import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
 
+
 type LikedSongListProps = {
-    songs: Song[];
     onPress: (song: Song) => void;
-    onBtnPress: (song: Song) => void;
-    
+    // songs: Song[];
+    // onBtnPress: (song: Song) => void;
 }
 
-export default function LikedSongList({ songs, onPress, onBtnPress }: LikedSongListProps) {
-    const filteredList = songs.filter(item => item.isLiked === true);
+
+const LikedSongList = observer(({ onPress }: LikedSongListProps) => {
+    const filteredList = songStore.getLikedSongs();
+    
+    const handleOnPress = (song: Song) => {
+        songStore.toggleLike(song.id);
+    }
+
     const renderItem = ({ item }: { item: Song }) => (
         <View style={styles.songItem}>
             <View style={{ width: "65%"}}>
@@ -25,22 +33,24 @@ export default function LikedSongList({ songs, onPress, onBtnPress }: LikedSongL
                 </TouchableOpacity>
             </View>
             <View style={{marginRight: "3%"}}>
-                <Pressable style={styles.iconButton} onPress={() => onBtnPress(item)}>
+                <Pressable style={styles.iconButton} onPress={() => handleOnPress(item)}>
                     <MaterialIcons name={"clear"} size={20} color="#fff" />
                 </Pressable>
             </View>
         </View>
     ) 
 
-   return (
+    return (
     <FlatList
         data={filteredList}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         style={{ width: "100%" }}
     />
-   )
-}
+    )
+})
+
+export default LikedSongList;
 
 
 const styles = StyleSheet.create({
@@ -84,3 +94,38 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
 });
+
+
+
+// export default function LikedSongList({ songs, onPress, onBtnPress }: LikedSongListProps) {
+//     const filteredList = songs.filter(item => item.isLiked === true);
+//     const renderItem = ({ item }: { item: Song }) => (
+//         <View style={styles.songItem}>
+//             <View style={{ width: "65%"}}>
+//                 <TouchableOpacity onPress={() => onPress(item)}>
+//                     <View style={styles.titleContainer}>
+//                         <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+//                         <View style={styles.textContainer}>
+//                             <Text numberOfLines={1} style={styles.songTitle}>{item.title}</Text>
+//                             <Text style={styles.authorTitle}>{item.author}</Text>
+//                         </View>
+//                     </View>
+//                 </TouchableOpacity>
+//             </View>
+//             <View style={{marginRight: "3%"}}>
+//                 <Pressable style={styles.iconButton} onPress={() => onBtnPress(item)}>
+//                     <MaterialIcons name={"clear"} size={20} color="#fff" />
+//                 </Pressable>
+//             </View>
+//         </View>
+//     ) 
+
+//    return (
+//     <FlatList
+//         data={filteredList}
+//         keyExtractor={(item) => item.id}
+//         renderItem={renderItem}
+//         style={{ width: "100%" }}
+//     />
+//    )
+// }

@@ -8,11 +8,12 @@ import ImageViewer from "@/components/ImageViewer";
 import LikeSong from "@/components/LikeSong";
 import PlayButton from "@/components/PlayButton";
 import SeekBar from "@/components/SeekBar";
-import { songs } from "@/components/elements/Song";
+// import { songs } from "@/components/elements/Song";
+import { songStore } from "@/store/SongStore";
 import { setParams } from "expo-router/build/global-state/routing";
 
-
 export default function Index() {
+  const songs = songStore.songs;
   const [isShuffle, setIsShuffle] = useState<boolean>(false);
   const [isRepeat, setIsRepeat] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
