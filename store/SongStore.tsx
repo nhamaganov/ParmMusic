@@ -6,6 +6,12 @@ class SongStore {
 
     constructor() {
         makeAutoObservable(this);
+        // makeObservable(this, {
+        //     songs: observable,
+        //     toggleLike: action,
+        //     getLikedSongs: action,
+        //     getAllSongs: action,
+        // })
     }
 
     toggleLike = (songId: string) => {

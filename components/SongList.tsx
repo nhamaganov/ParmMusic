@@ -1,34 +1,41 @@
+import { songStore } from "@/store/SongStore";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { observer } from "mobx-react-lite";
 import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
 import PlaylistButton from "./PlaylistButton";
 
 
 type SongListProps = {
-    songs: Song[];
     onPress: (song: Song) => void;
-    onLikePress: (song: Song) => void;
 }
 
-export default function SongList({ songs, onPress, onLikePress }: SongListProps) {
-   const renderItem = ({ item }: { item: Song }) => (
-    <View style={styles.itemContainer}>
-        <TouchableOpacity style={{ width:"65%" }} onPress={() => onPress(item)}>
-            <View style={styles.titleContainer}>
-                <Image source={item.cover} style={styles.image} resizeMode="contain"/>
-                <View style={styles.textContainer}>
-                    <Text numberOfLines={1} style={styles.songTitle}>{item.title}</Text>
-                    <Text style={styles.authorTitle}>{item.author}</Text>
+
+const SongList = observer(({ onPress }: SongListProps) => {
+    const songs = songStore.getAllSongs();  
+
+    const handleOnPress = (song: Song) => {
+        songStore.toggleLike(song.id);
+    }
+
+    const renderItem = ({ item }: { item: Song }) => (
+        <View style={styles.itemContainer}>
+            <TouchableOpacity style={{ width:"65%" }} onPress={() => onPress(item)}>
+                <View style={styles.titleContainer}>
+                    <Image source={item.cover} style={styles.image} resizeMode="contain"/>
+                    <View style={styles.textContainer}>
+                        <Text numberOfLines={1} style={styles.songTitle}>{item.title}</Text>
+                        <Text style={styles.authorTitle}>{item.author}</Text>
+                    </View>
                 </View>
+            </TouchableOpacity>
+            <View style={styles.iconButton}>
+                <Pressable onPress={() => handleOnPress(item)}>
+                    <MaterialIcons  name={item.isLiked ? "favorite" : "favorite-outline"} size={25} color="#fff" />
+                </Pressable>
             </View>
-        </TouchableOpacity>
-        <View style={styles.iconButton}>
-            <Pressable onPress={() => onLikePress(item)}>
-                <MaterialIcons name={item.isLiked ? "favorite" : "favorite-outline"} size={25} color="#fff" />
-            </Pressable>
         </View>
-    </View>
-   )
+    )
 
    return (
     <View style={{ flex: 1, width: "100%" }}>
@@ -41,7 +48,7 @@ export default function SongList({ songs, onPress, onLikePress }: SongListProps)
         <PlaylistButton onPress={() => {}} buttonText="Play"/>
     </View>
    )
-}
+})
 
 
 const styles = StyleSheet.create({
@@ -95,3 +102,6 @@ const styles = StyleSheet.create({
         marginRight: "3%",
     }
 });
+
+
+export default SongList;
