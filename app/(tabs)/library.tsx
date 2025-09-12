@@ -5,8 +5,9 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
-export default function Library() {
 
+export default function Library() {
+  const songs = songStore.getAllSongs();
 
   const [isPressed, setIsPressed] = useState(false)
   
@@ -27,7 +28,7 @@ export default function Library() {
   
   return (
     <View style={styles.container}>
-      <SongList songs={songStore.songs} onPress={handlePress} onLikePress={handleLikePress}/>
+      <SongList songs={songs} onPress={handlePress} />
     </View>
   );
 }
