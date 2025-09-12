@@ -13,7 +13,7 @@ import { songStore } from "@/store/SongStore";
 import { setParams } from "expo-router/build/global-state/routing";
 
 export default function Index() {
-  const songs = songStore.songs;
+  const [songs, setSongs] = useState(songStore.songs);
   const [isShuffle, setIsShuffle] = useState<boolean>(false);
   const [isRepeat, setIsRepeat] = useState<boolean>(false);
   const [isPressed, setIsPressed] = useState<boolean>(false);
@@ -149,6 +149,15 @@ export default function Index() {
     return () => setParams({ selectedSong: undefined });
   }, [selectedSong]);
 
+
+  useEffect(() => {
+    if (params.songs) {
+      setSongs(JSON.parse(params.songs as string));
+      // setCurrentSong(Number(songs[0].id));
+    };
+
+    // return () => setParams({ selectedSong: undefined });
+  })
 
   return (
     <View style={styles.container}>

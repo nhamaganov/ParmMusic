@@ -8,18 +8,19 @@ import PlaylistButton from "./PlaylistButton";
 
 type ItemProps = {
     item: Song
-    onPress: (song: Song) => void;
+    onItemPress: (song: Song) => void;
 }
 
 type ListProps = {
     songs: Song[];
     onPress: (song: Song) => void;
+    onPlayButtonPress: (songs: Song[]) => void;
 }
 
-const MyItem = observer(({ item, onPress }: ItemProps) =>{
+const MyItem = observer(({ item, onItemPress }: ItemProps) =>{
     return (
         <View style={styles.itemContainer}>
-            <TouchableOpacity style={{ width:"65%" }} onPress={() => onPress(item)}>
+            <TouchableOpacity style={{ width:"65%" }} onPress={() => onItemPress(item)}>
                 <View style={styles.titleContainer}>
                     <Image source={item.cover} style={styles.image} resizeMode="contain"/>
                     <View style={styles.textContainer}>
@@ -40,17 +41,17 @@ const MyItem = observer(({ item, onPress }: ItemProps) =>{
 })
 
 
-const SongList = observer(({ songs, onPress }: ListProps) => {
+const SongList = observer(({ songs, onPress, onPlayButtonPress }: ListProps) => {
     
     return (
         <View style={{ flex: 1, width: "100%" }}>
             <FlatList
                 data={songs}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => <MyItem item={item} onPress={onPress} />}
+                renderItem={({ item }) => <MyItem item={item} onItemPress={onPress} />}
                 style={{ width: "100%" }}
                 />
-            <PlaylistButton onPress={() => {}} buttonText="Play"/>
+            <PlaylistButton onPress={() => onPlayButtonPress(songs)} buttonText="Play"/>
         </View>
     )
 })

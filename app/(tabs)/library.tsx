@@ -2,33 +2,31 @@ import { Song } from "@/components/elements/Song";
 import SongList from "@/components/SongList";
 import { songStore } from "@/store/SongStore";
 import { router } from "expo-router";
-import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 
 
 export default function Library() {
   const songs = songStore.getAllSongs();
 
-  const [isPressed, setIsPressed] = useState(false)
-  
-
-  const handleLikePress = (song: Song) => {
-    song.isLiked = !song.isLiked;
-    setIsPressed(prev => !prev);
-  }
-  
   
   const handlePress = (song: Song) => {
     router.push({
       pathname: "/",
-      params: {selectedSong: JSON.stringify(song)}
+      params: {selectedSong: JSON.stringify(song)},
+    })
+  }
+
+  const onPlayButtonPressHandle = (songs: Song[]) => {
+    router.push({
+      pathname: "/",
+      params: {songs: JSON.stringify(songs)},
     })
   }
 
   
   return (
     <View style={styles.container}>
-      <SongList songs={songs} onPress={handlePress} />
+      <SongList songs={songs} onPress={handlePress} onPlayButtonPress={onPlayButtonPressHandle}/>
     </View>
   );
 }

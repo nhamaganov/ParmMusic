@@ -16,6 +16,13 @@ export default function PlaylistScreen() {
     })
   } 
 
+  const onPlayButtonPressHandle = (songs: Song[]) => {
+    router.push({
+      pathname: "/",
+      params: {songs: JSON.stringify(songs)},
+    })
+  }
+
   // const handleBtnPress = (song: Song) => {
   //   song.isLiked = false;
   //   setIsPressed(prev => !prev); // Без этой строки не работает))
@@ -24,7 +31,7 @@ export default function PlaylistScreen() {
 
   return (
       <View style={styles.container}>
-        <LikedSongList onPress={handlePress} />
+        <LikedSongList onPress={handlePress} onPlayButtonPress={onPlayButtonPressHandle} />
       </View>
     );
 }

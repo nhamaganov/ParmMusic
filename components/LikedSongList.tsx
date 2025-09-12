@@ -3,16 +3,18 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { observer } from "mobx-react-lite";
 import { FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Song } from "./elements/Song";
+import PlaylistButton from "./PlaylistButton";
 
 
 type LikedSongListProps = {
-    onPress: (song: Song) => void;
+    onPress: (song: Song) => void;    
+    onPlayButtonPress: (songs: Song[]) => void;
     // songs: Song[];
     // onBtnPress: (song: Song) => void;
 }
 
 
-const LikedSongList = observer(({ onPress }: LikedSongListProps) => {
+const LikedSongList = observer(({ onPress, onPlayButtonPress }: LikedSongListProps) => {
     const filteredList = songStore.getLikedSongs();
     
     const handleOnPress = (song: Song) => {
@@ -41,12 +43,15 @@ const LikedSongList = observer(({ onPress }: LikedSongListProps) => {
     ) 
 
     return (
-    <FlatList
-        data={filteredList}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        style={{ width: "100%" }}
-    />
+    <View style={{ flex: 1, width: "100%" }}>
+        <FlatList
+            data={filteredList}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            style={{ width: "100%" }}
+        />
+        <PlaylistButton onPress={() => onPlayButtonPress(filteredList)} buttonText="Play"/>
+    </View>
     )
 })
 
