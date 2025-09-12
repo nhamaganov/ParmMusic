@@ -50,7 +50,6 @@ const LikedSongList = observer(({ onPress }: LikedSongListProps) => {
     )
 })
 
-export default LikedSongList;
 
 
 const styles = StyleSheet.create({
@@ -95,6 +94,7 @@ const styles = StyleSheet.create({
     },
 });
 
+export default LikedSongList;
 
 
 // export default function LikedSongList({ songs, onPress, onBtnPress }: LikedSongListProps) {

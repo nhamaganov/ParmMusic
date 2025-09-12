@@ -33,6 +33,7 @@
     "expo-system-ui": "~5.0.10",
     "expo-web-browser": "~14.2.0",
     "mobx": "^6.13.7",
+    "mobx-react": "^9.2.0",
     "mobx-react-lite": "^4.1.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
